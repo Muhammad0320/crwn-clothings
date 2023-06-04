@@ -4,13 +4,39 @@ import "firebase/compat/firestore";
 import "firebase/compat/auth";
 
 const cofig = {
-  apiKey: "AIzaSyBAYvDo91pOu1qNSZxP0W0O_h2g57nMFXk",
-  authDomain: "crwn-clothing-24c00.firebaseapp.com",
-  projectId: "crwn-clothing-24c00",
-  storageBucket: "crwn-clothing-24c00.appspot.com",
-  messagingSenderId: "427145340630",
-  appId: "1:427145340630:web:905cdf981747dca2ba8b77",
-  measurementId: "G-8Y49RNG730",
+  apiKey: "AIzaSyDRDv3EE0-BrhG-StghnPEcJ8kRn0POc_Q",
+  authDomain: "crown-db-5b490.firebaseapp.com",
+  projectId: "crown-db-5b490",
+  storageBucket: "crown-db-5b490.appspot.com",
+  messagingSenderId: "816169554632",
+  appId: "1:816169554632:web:95d439833fd6db2a2acbfd",
+  measurementId: "G-8BDJK6CCD0",
+};
+
+export const createUSerProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  const userDocRef = firestore.doc(`user/${userAuth.uid}`);
+
+  const docSnapshot = await userDocRef.get();
+
+  if (!docSnapshot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await userDocRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (error) {
+      console.log(` Error occured while creating user ${error.message} `);
+    }
+  }
+
+  return userDocRef;
 };
 
 firebase.initializeApp(cofig);

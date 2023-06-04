@@ -1,12 +1,15 @@
-import React from "react";
+import React from 'react';
 
-import "./header.style.scss";
+import './header.style.scss';
 
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
-import { ReactComponent as Logo } from "../../assets/logo.svg";
+import { ReactComponent as Logo } from '../../assets/logo.svg';
 
-import { auth } from "../../firebase/firebase.utilis";
+import { auth } from '../../firebase/firebase.utilis';
+import { connect } from 'react-redux';
+
+import ShoppingCart from '../shopping-cart/shopping-cart.components';
 
 const HeaderComponent = ({ currentUSer }) => (
   <div className="header">
@@ -31,8 +34,14 @@ const HeaderComponent = ({ currentUSer }) => (
           SIGN IN
         </Link>
       )}
+
+      <ShoppingCart className="option" />
     </div>
   </div>
 );
 
-export default HeaderComponent;
+const mapStateToProps = state => ({
+  currentUSer: state.user.currentUSer,
+});
+
+export default connect(mapStateToProps)(HeaderComponent);
